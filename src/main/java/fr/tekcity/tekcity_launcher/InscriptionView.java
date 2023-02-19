@@ -5,6 +5,8 @@ import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import static javafx.scene.layout.BackgroundPosition.CENTER;
@@ -47,7 +50,7 @@ public class InscriptionView {
         // On créer un Pane pour faire une boite de couleur noir pour le formulaire de connexion
         Pane inscriptionBox = new Pane();
         inscriptionBox.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-        inscriptionBox.setMaxHeight(400);
+        inscriptionBox.setMaxHeight(500);
         inscriptionBox.setMaxWidth(400);
 
         // Ombre de loginBox
@@ -112,6 +115,14 @@ public class InscriptionView {
         userNameField.setMaxWidth(250);
         userNameField.setPrefHeight(30);
         userNameField.setMaxHeight(30);
+
+        // On réinitialise la bordure du champs de texte si l'utilisateur écrit dedans
+        userNameField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                userNameField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+            }
+        });
         ///////////////////////////////////////////////////////////
 
         // E-Mail
@@ -127,6 +138,14 @@ public class InscriptionView {
         mailField.setMaxWidth(250);
         mailField.setPrefHeight(30);
         mailField.setMaxHeight(30);
+
+        // On réinitialise la bordure du champs de texte si l'utilisateur écrit dedans
+        mailField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                mailField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+            }
+        });
         ///////////////////////////////////////////////////////////
 
         // Password
@@ -142,17 +161,23 @@ public class InscriptionView {
         passwordField.setMaxWidth(250);
         passwordField.setPrefHeight(10);
         passwordField.setMaxHeight(10);
+        // On réinitialise la bordure du champs de texte si l'utilisateur écrit dedans
+        passwordField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                passwordField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+            }
+        });
         ///////////////////////////////////////////////////////////
 
         // Boutton
         BorderPane buttonBox = new BorderPane();
-        MFXButton loginButton = new MFXButton("S'inscrire");
-        loginButton.setStyle("-fx-background-color: skyblue; -fx-font-size: 24px;");
+        MFXButton inscriptionButton = new MFXButton("S'inscrire");
+        inscriptionButton.setStyle("-fx-background-color: skyblue; -fx-font-size: 24px;");
 
         // Centre le bouton
-        BorderPane.setAlignment(loginButton, Pos.CENTER);
-        buttonBox.setCenter(loginButton);
-        ///////////////////////////////////////////////////////////////////
+        BorderPane.setAlignment(inscriptionButton, Pos.CENTER);
+        buttonBox.setCenter(inscriptionButton);
 
         // On fait un lien pour revenir sur la page de connexion
         Hyperlink connexion_lien = new Hyperlink("<- Retour");
@@ -163,12 +188,24 @@ public class InscriptionView {
             sceneController.activate("login");
         });
 
+        // On créer un message d'erreur pour le formulaire d'inscription
+        final Text errorMessage = new Text();
+        errorMessage.setFill(Color.RED);
+        errorMessage.setFont(new Font("Helvetica", 18));
+
+        // Créer un évenement au bouton
+        inscriptionButton.setOnAction(
+                new InscriptionController(userNameField, mailField, passwordField, errorMessage)
+        );
+        ///////////////////////////////////////////////////////////////////
+
         // On ajoute les éléments à la grille
         inscriptionGrid.add(userNameField, 0, 6);
         inscriptionGrid.add(mailField, 0, 7);
         inscriptionGrid.add(passwordField, 0, 8);
         inscriptionGrid.add(buttonBox, 0, 10);
-        inscriptionGrid.add(connexion_lien, 0, 11);
+        inscriptionGrid.add(errorMessage, 0, 11);
+        inscriptionGrid.add(connexion_lien, 0, 12);
 
         // On aligne les élements
         inscriptionGrid.setStyle("-fx-alignment: center;");

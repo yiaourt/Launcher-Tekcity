@@ -138,6 +138,11 @@ public class LoginView {
         // Centre le bouton
         BorderPane.setAlignment(loginButton, Pos.CENTER);
         buttonBox.setCenter(loginButton);
+
+        // Créer un évenement au bouton
+        loginButton.setOnAction(
+                new LoginController(userNameField, passwordField)
+        );
         ///////////////////////////////////////////////////////////////////
 
         // On fait un lien pour s'inscrire
