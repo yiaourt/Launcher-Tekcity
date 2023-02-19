@@ -14,6 +14,8 @@ module fr.tekcity.tekcity_launcher {
     requires eu.hansolo.fx.heatmap;
     requires eu.hansolo.toolboxfx;
     requires eu.hansolo.toolbox;
+    requires com.jfoenix;
+    requires MaterialFX;
 
     opens fr.tekcity.tekcity_launcher to javafx.fxml;
     exports fr.tekcity.tekcity_launcher;
