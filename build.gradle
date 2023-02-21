@@ -42,7 +42,7 @@ dependencies {
     implementation('net.synedra:validatorfx:0.4.0') {
         exclude(group: 'org.openjfx')
     }
-    implementation('org.kordamp.ikonli:ikonli-javafx:12.3.1')
+
     implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
     implementation('eu.hansolo:tilesfx:17.1.15') {
         exclude(group: 'org.openjfx')
@@ -56,8 +56,16 @@ dependencies {
     implementation('com.jfoenix:jfoenix:9.0.10')
     implementation('io.github.palexdev:materialfx:11.13.9')
 
-    implementation('de.jensd:fontawesomefx-commons:9.1.2')
-    implementation('de.jensd:fontawesomefx-fontawesome:4.7.0-11')
+    implementation('org.kordamp.ikonli:ikonli-coreui-pack:12.3.1')
+    implementation("org.kordamp.ikonli:ikonli-core:12.3.1")
+    implementation("org.kordamp.ikonli:ikonli-javafx:12.3.1")
+    implementation("org.kordamp.ikonli:ikonli-materialdesign-pack:12.3.1")
+    implementation("org.kordamp.ikonli:ikonli-fontawesome-pack:12.3.1")
+
+    implementation("com.mysql:mysql-connector-j:8.0.32")
+
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.konghq:unirest-java:4.0.0-RC2")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

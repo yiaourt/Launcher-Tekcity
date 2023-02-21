@@ -1,8 +1,7 @@
 package fr.tekcity.tekcity_launcher;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 
 public class Main extends Application {
 
@@ -34,6 +33,7 @@ public class Main extends Application {
         // Définir la position de la fenêtre
         primaryStage.setX(centerX);
         primaryStage.setY(centerY);
+
     }
 
     public static void main(String[] args) {

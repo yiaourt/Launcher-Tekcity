@@ -16,7 +16,13 @@ public class SceneController {
     }
 
     public void addScene(String name, Parent view) {
+
+        // Nouvelle scene
         Scene scene = new Scene(view);
+
+        // Fichiers de style
+        scene.getStylesheets().add("ikonli.css");
+
         scenes.put(name, scene);
     }
 

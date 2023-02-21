@@ -24,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+
 import static javafx.scene.layout.BackgroundPosition.CENTER;
 import static javafx.scene.layout.BackgroundRepeat.REPEAT;
 
@@ -102,6 +103,11 @@ public class InscriptionView {
         inscriptionGrid.setMaxHeight(400);
         inscriptionGrid.setMaxWidth(400);
 
+        // On créer un message d'erreur pour le formulaire d'inscription
+        final Label errorMessage = new Label();
+        errorMessage.setTextFill(Color.RED);
+        errorMessage.setFont(new Font("Helvetica", 18));
+
         // Username
         MFXTextField userNameField = new MFXTextField();
         userNameField.setPromptText("Nom d'utilisateur");
@@ -121,6 +127,7 @@ public class InscriptionView {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 userNameField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+                errorMessage.setVisible(false);
             }
         });
         ///////////////////////////////////////////////////////////
@@ -144,28 +151,55 @@ public class InscriptionView {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 mailField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+                errorMessage.setVisible(false);
             }
         });
         ///////////////////////////////////////////////////////////
 
-        // Password
-        MFXPasswordField passwordField = new MFXPasswordField();
-        passwordField.setPromptText("Mot de Passe");
-        passwordField.setStyle("-fx-font-size: 20;");
-        passwordField.setFloatMode(FloatMode.BORDER);
-        passwordField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
-        passwordField.setContextMenuDisabled(true);
-        passwordField.setPadding(new Insets(5, 5, 5, 5));
-        passwordField.setId("password_inscription");
-        passwordField.setPrefWidth(250);
-        passwordField.setMaxWidth(250);
-        passwordField.setPrefHeight(10);
-        passwordField.setMaxHeight(10);
+        // Password n°1
+        MFXPasswordField passwordField_1 = new MFXPasswordField();
+        passwordField_1.setPromptText("Mot de Passe");
+        passwordField_1.setStyle("-fx-font-size: 16;");
+        passwordField_1.setFloatMode(FloatMode.BORDER);
+        passwordField_1.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+        passwordField_1.setContextMenuDisabled(true);
+        passwordField_1.setPadding(new Insets(5, 5, 5, 5));
+        passwordField_1.setId("password_inscription");
+        passwordField_1.setPrefWidth(250);
+        passwordField_1.setMaxWidth(250);
+        passwordField_1.setPrefHeight(10);
+        passwordField_1.setMaxHeight(10);
+
         // On réinitialise la bordure du champs de texte si l'utilisateur écrit dedans
-        passwordField.textProperty().addListener(new ChangeListener<String>() {
+        passwordField_1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                passwordField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+                passwordField_1.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+                errorMessage.setVisible(false);
+            }
+        });
+        ///////////////////////////////////////////////////////////
+
+        // Password n°2
+        MFXPasswordField passwordField_2 = new MFXPasswordField();
+        passwordField_2.setPromptText("Répétez le mot de passe");
+        passwordField_2.setStyle("-fx-font-size: 16;");
+        passwordField_2.setFloatMode(FloatMode.BORDER);
+        passwordField_2.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+        passwordField_2.setContextMenuDisabled(true);
+        passwordField_2.setPadding(new Insets(5, 5, 5, 5));
+        passwordField_2.setId("password_inscription");
+        passwordField_2.setPrefWidth(250);
+        passwordField_2.setMaxWidth(250);
+        passwordField_2.setPrefHeight(10);
+        passwordField_2.setMaxHeight(10);
+
+        // On réinitialise la bordure du champs de texte si l'utilisateur écrit dedans
+        passwordField_2.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                passwordField_2.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+                errorMessage.setVisible(false);
             }
         });
         ///////////////////////////////////////////////////////////
@@ -188,21 +222,17 @@ public class InscriptionView {
             sceneController.activate("login");
         });
 
-        // On créer un message d'erreur pour le formulaire d'inscription
-        final Text errorMessage = new Text();
-        errorMessage.setFill(Color.RED);
-        errorMessage.setFont(new Font("Helvetica", 18));
-
         // Créer un évenement au bouton
         inscriptionButton.setOnAction(
-                new InscriptionController(userNameField, mailField, passwordField, errorMessage)
+                new InscriptionController(userNameField, mailField, passwordField_1, passwordField_2, errorMessage)
         );
         ///////////////////////////////////////////////////////////////////
 
         // On ajoute les éléments à la grille
         inscriptionGrid.add(userNameField, 0, 6);
         inscriptionGrid.add(mailField, 0, 7);
-        inscriptionGrid.add(passwordField, 0, 8);
+        inscriptionGrid.add(passwordField_1, 0, 8);
+        inscriptionGrid.add(passwordField_2, 0, 9);
         inscriptionGrid.add(buttonBox, 0, 10);
         inscriptionGrid.add(errorMessage, 0, 11);
         inscriptionGrid.add(connexion_lien, 0, 12);
