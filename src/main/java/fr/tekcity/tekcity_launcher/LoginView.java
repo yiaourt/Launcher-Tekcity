@@ -7,37 +7,29 @@ import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
+import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import static javafx.scene.layout.BackgroundPosition.CENTER;
 import static javafx.scene.layout.BackgroundRepeat.REPEAT;
 
-public class LoginView {
+public class LoginView extends Parent {
 
-    private final SceneController sceneController;
-    private Parent view;
+    private Stage stage;
 
-    public LoginView(SceneController sceneController) {
-        this.sceneController = sceneController;
-        initView();
-    }
+    public LoginView(Stage stage) {
 
-    public Parent getView() {
-        return view;
-    }
-
-    private void initView() {
         // On créer ci-dessous l'inteface de connexion
         //-------------------------------------------------------------------------
         // On initialise l'effet de flou
@@ -151,7 +143,8 @@ public class LoginView {
         inscription_lien.setFont(new Font("Helvetica", 18));
         inscription_lien.setOnAction(event -> {
 
-            sceneController.activate("inscription");
+            Main main_controller = new Main();
+            main_controller.switchToScene("InscriptionView", stage);
         });
 
         // On ajoute les éléments à la grille
@@ -190,6 +183,7 @@ public class LoginView {
         // On groupe les éléments dans la root
         root.getChildren().addAll(black_bg, img_bg, loginBox, loginGrid);
 
-        view = root;
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

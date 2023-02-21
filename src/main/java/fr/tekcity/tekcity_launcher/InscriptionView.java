@@ -11,6 +11,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -22,27 +23,20 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
 import static javafx.scene.layout.BackgroundPosition.CENTER;
 import static javafx.scene.layout.BackgroundRepeat.REPEAT;
 
+
 public class InscriptionView {
 
-    private final SceneController sceneController;
-    private Parent view;
+    private Stage stage;
 
-    public InscriptionView(SceneController sceneController) {
-        this.sceneController = sceneController;
-        initView();
-    }
+    public InscriptionView(Stage stage) {
 
-    public Parent getView() {
-        return view;
-    }
-
-    private void initView() {
         // On créer ci-dessous l'inteface d"inscription
         //-------------------------------------------------------------------------
         // On initialise l'effet de flou
@@ -219,7 +213,8 @@ public class InscriptionView {
         connexion_lien.setFont(new Font("Helvetica", 18));
         connexion_lien.setOnAction(event -> {
 
-            sceneController.activate("login");
+            Main main_controller = new Main();
+            main_controller.switchToScene("LoginView", stage);
         });
 
         // Créer un évenement au bouton
@@ -267,6 +262,7 @@ public class InscriptionView {
         // On groupe les éléments dans la root
         root.getChildren().addAll(black_bg, img_bg, inscriptionBox, inscriptionGrid);
 
-        view = root;
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

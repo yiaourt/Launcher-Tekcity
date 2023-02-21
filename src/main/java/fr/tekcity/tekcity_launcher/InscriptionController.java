@@ -11,8 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.MalformedURLException;
@@ -142,57 +141,6 @@ public class InscriptionController implements EventHandler<ActionEvent> {
             errorMessage.setGraphic(icon);
             errorMessage.setText("Erreur dans le formulaire.");
             errorMessage.setVisible(true);
-        }
-
-        // On créer une Url qui va vérifier l'utilisateur sur l'API officiel de Minecraft
-        long date = new Date().getTime();
-        URL url = null;
-        try {
-            url = new URL("https://api.mojang.com/users/profiles/minecraft/"+ username + "?at=" + date);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        // On ouvre la connexion avec l'API
-        HttpURLConnection con = null;
-        try {
-            con = (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // On paramètre la requête sur un "GET"
-        try {
-            con.setRequestMethod("GET");
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        }
-
-        // On li la réponse sur la connexion
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // On récupère la réponse
-        String inputLine;
-        while (true) {
-            try {
-                // Si la réponse est pas vide'
-                if ((inputLine = in.readLine()) == null) break;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            JSONObject response = new JSONObject(inputLine);
-            System.out.println(response.getString("id"));
-
-        }
-        try {
-            in.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
 

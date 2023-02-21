@@ -1,39 +1,58 @@
 package fr.tekcity.tekcity_launcher;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class Main extends Application {
 
+    private Stage stage;
+    public Scene scene;
+
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage stage) {
 
-        // Création du contrôleur de scène
-        SceneController sceneController = new SceneController(primaryStage);
+        this.stage = stage;
 
-        // Création des scenes
-        LoginView loginView = new LoginView(sceneController);
-        InscriptionView inscriptionView = new InscriptionView(sceneController);
-
-        // Ajout des scènes au contrôleur de scène
-        sceneController.addScene("login", loginView.getView());
-        sceneController.addScene("inscription", inscriptionView.getView());
-
-        // Activation de la vue de connexion
-        sceneController.activate("login");
+        // Initialisation de la scène selon la connexion de l'utilisateur
+        switchToScene("LoginView", getStage());
 
         // Taille de la fenêtre
-        primaryStage.setMinWidth(966);
-        primaryStage.setMinHeight(666);
+        stage.setMinWidth(966);
+        stage.setMinHeight(666);
 
         // Calculer la position de la fenêtre au centre de l'écran
-        double centerX = (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth() - primaryStage.getWidth()) / 2.0;
-        double centerY = (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight() - primaryStage.getHeight()) / 2.0;
+        double centerX = (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth() - stage.getWidth()) / 2.0;
+        double centerY = (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight() - stage.getHeight()) / 2.0;
 
         // Définir la position de la fenêtre
-        primaryStage.setX(centerX);
-        primaryStage.setY(centerY);
+        stage.setX(centerX);
+        stage.setY(centerY);
 
+    }
+
+    // Fonction qui créer une scène selon la vue
+    public void switchToScene(String viewName, Stage stage) {
+
+        // La page de connexion
+        if(Objects.equals(viewName, "LoginView")) {
+
+            LoginView login_view = new LoginView(stage);
+        }
+
+        // LA page d'inscription
+        if(Objects.equals(viewName, "InscriptionView")) {
+
+            InscriptionView inscription_view = new InscriptionView(stage);
+        }
+    }
+
+    // On récupere le stage avec une fonction getStage()
+    public Stage getStage() {
+        return stage;
     }
 
     public static void main(String[] args) {
