@@ -26,6 +26,12 @@ module fr.tekcity.tekcity_launcher {
     requires unirest.java;
     requires com.google.gson;
 
+    requires CustomStage;
+
+    requires undecorator;
+
+
+
     opens fr.tekcity.tekcity_launcher to javafx.fxml;
     exports fr.tekcity.tekcity_launcher;
 }

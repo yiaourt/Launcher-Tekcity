@@ -1,5 +1,6 @@
 package fr.tekcity.tekcity_launcher;
 
+import insidefx.undecorator.Undecorator;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -7,6 +8,7 @@ import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +23,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import insidefx.undecorator.UndecoratorScene;
+
 import static javafx.scene.layout.BackgroundPosition.CENTER;
 import static javafx.scene.layout.BackgroundRepeat.REPEAT;
 
@@ -33,6 +37,7 @@ public class LoginView extends Parent {
         // On créer ci-dessous l'inteface de connexion
         //-------------------------------------------------------------------------
         // On initialise l'effet de flou
+
         BoxBlur blur = new BoxBlur(20, 0, 3);
 
         // On créer un Pane pour faire une boite de couleur noir pour le formulaire de connexion
@@ -184,6 +189,7 @@ public class LoginView extends Parent {
         root.getChildren().addAll(black_bg, img_bg, loginBox, loginGrid);
 
         stage.setScene(new Scene(root));
+
         stage.show();
     }
 }

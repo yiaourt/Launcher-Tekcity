@@ -1,16 +1,20 @@
 package fr.tekcity.tekcity_launcher;
 
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import lk.vivoxalabs.customstage.CustomStage;
+import lk.vivoxalabs.customstage.CustomStageBuilder;
+
 
 import java.util.Objects;
 
 public class Main extends Application {
 
     private Stage stage;
-    public Scene scene;
 
     @Override
     public void start(Stage stage) {
@@ -19,6 +23,8 @@ public class Main extends Application {
 
         // Initialisation de la scène selon la connexion de l'utilisateur
         switchToScene("LoginView", getStage());
+
+        stage.getScene().getStylesheets().add("file:src/main/resources/css/toolbar.css");
 
         // Taille de la fenêtre
         stage.setMinWidth(966);
@@ -41,12 +47,14 @@ public class Main extends Application {
         if(Objects.equals(viewName, "LoginView")) {
 
             LoginView login_view = new LoginView(stage);
+            login_view.getStyleClass().add("root");
         }
 
-        // LA page d'inscription
+        // La page d'inscription
         if(Objects.equals(viewName, "InscriptionView")) {
 
             InscriptionView inscription_view = new InscriptionView(stage);
+
         }
     }
 
