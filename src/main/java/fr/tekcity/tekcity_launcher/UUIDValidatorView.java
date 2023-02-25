@@ -36,6 +36,7 @@ import javafx.util.Duration;
 import java.awt.datatransfer.Clipboard;
 import java.awt.font.TextAttribute;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.awt.font.TextAttribute.UNDERLINE;
@@ -80,8 +81,8 @@ public class UUIDValidatorView {
         // Premier conteneur
         Pane container = new Pane();
         container.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-        container.setMaxHeight(400);
-        container.setMaxWidth(600);
+        container.setMaxHeight(500);
+        container.setMaxWidth(700);
         container.setBorder(border);
 
         // Ombre de container
@@ -101,7 +102,7 @@ public class UUIDValidatorView {
 
         // On créer un Grid de pour la validation de l'UUID de l'utilisateur
         GridPane UUIDvalidation_grid = new GridPane();
-        UUIDvalidation_grid.setPadding(new Insets(20));
+        UUIDvalidation_grid.setPadding(new Insets(20, 20, 20, 20));
         UUIDvalidation_grid.setVgap(10);
         UUIDvalidation_grid.setHgap(10);
         UUIDvalidation_grid.setAlignment(Pos.CENTER);
@@ -115,9 +116,9 @@ public class UUIDValidatorView {
         // On créer un Grid des informations Minecraft du joueur
         GridPane minecraft_user_container = new GridPane();
         minecraft_user_container.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-        minecraft_user_container.setPadding(new Insets(20));
+        minecraft_user_container.setPadding(new Insets(20, 20, 20, 20));
         minecraft_user_container.setVgap(10);
-        minecraft_user_container.setHgap(10);
+        minecraft_user_container.setHgap(20);
         // On créer une bordure au container
         minecraft_user_container.setBorder(border);
 
@@ -130,6 +131,8 @@ public class UUIDValidatorView {
 
         minecraft_user_container.add(avatar_image_view, 0, 0);
         minecraft_user_container.add(minecraft_username, 0, 1);
+
+        GridPane.setHalignment(avatar_image_view, HPos.CENTER);
 
         // On créer un conteneur pour le texte de la validation de l'UUID de l'utilisateur
         GridPane text_container = new GridPane();
@@ -195,6 +198,14 @@ public class UUIDValidatorView {
         search_field.setTranslateY(30);
         search_field.setPrefWidth(300);
 
+        // On créer un bouton de validation dans son conteneur pour passer à la scène suivante
+        MFXButton validation_button = new MFXButton("Valider");
+        validation_button.setFont(Font.font("Helvetica", FontWeight.BOLD, 18));
+        validation_button.setPadding(new Insets(2, 20, 2, 20));
+        validation_button.setStyle("-fx-background-color: gray; -fx-font-size: 24px;");
+        // On le désactive par défaut
+        validation_button.setDisable(true);
+
         // évènement de recherche lorsque l'utilisateur termine d'écrire
         PauseTransition pause = new PauseTransition(Duration.millis(333));
         search_field.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -208,59 +219,89 @@ public class UUIDValidatorView {
                 ImageView new_avatar_image_view = new ImageView(new_head_image);
 
                 minecraft_user_container.add(new_avatar_image_view, 0, 0);
+                GridPane.setHalignment(new_avatar_image_view, HPos.CENTER);
 
             });
             pause.playFromStart();
+            // On active le bouton de validation
+            validation_button.setDisable(false);
+            validation_button.setStyle("-fx-background-color: skyblue; -fx-font-size: 24px;");
+
         });
 
-        // On créer un bouton de validation dans son conteneur pour passer à la scène suivante
-        MFXButton validation_button = new MFXButton("Valider");
-        validation_button.setFont(Font.font("Helvetica", FontWeight.BOLD, 18));
-        validation_button.setPadding(new Insets(2, 20, 2, 20));
-        validation_button.setStyle("-fx-background-color: gray; -fx-font-size: 24px;");
-        // On le désactive par défaut
-        validation_button.setDisable(true);
 
         // On instancie par défaut la variable de condition
         AtomicBoolean is_searching_uuid = new AtomicBoolean(false);
 
         // Ajoute un écouteur pour surveiller les changements de sélection
         toggleGroup.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
-            if (newToggle == null) {
-                // Si aucun bouton n'est sélectionné, ne rien faire
-            } else if (!newToggle.equals(oldToggle)) {
+
+            if (!newToggle.equals(oldToggle)) {
 
                 if (newToggle.equals(UUID_incorrect)) { // Si "Non" est sélectionné
 
                     UUID_valid.setSelected(false); // On déselectionne le bouton "Oui"
 
-                    // On active le bouton de validation
-                    validation_button.setDisable(false);
-                    validation_button.setStyle("-fx-background-color: skyblue; -fx-font-size: 24px;");
-
-                    // On rend visible le formulaire de recherche de profil minecraft
-                    search_container.setVisible(true);
-
-                    // On instancie la variable disant que l'utilisateur veut rechercher son profil
-                    is_searching_uuid.set(true);
-
                 } else { // Si "Oui" est sélectionné
 
-                    UUID_incorrect.setSelected(false);
-
-                    // On active le bouton de validation
-                    validation_button.setDisable(false);
-                    validation_button.setStyle("-fx-background-color: skyblue; -fx-font-size: 24px;");
-
-                    // On enlève la sélection manuelle du profil minecraft
-                    search_container.setVisible(false);
-
-                    // On instancie la variable disant que l'utilisateur 
-                    // souhaite garder se profil minecraft pour l'inscription
-                    is_searching_uuid.set(false);
+                    UUID_incorrect.setSelected(false); // On déselectionne le bouton "Non"
 
                 }
             }
+        });
+
+        // On créer l'évènement du bouton radio UUID_valid "Oui"
+        UUID_valid.setOnAction(event -> {
+
+            // On active le bouton de validation
+            validation_button.setDisable(false);
+            validation_button.setStyle("-fx-background-color: skyblue; -fx-font-size: 24px;");
+
+            // On enlève la sélection manuelle du profil minecraft
+            search_container.setVisible(false);
+
+            // On réinitialise au cas ou l'image de l'avatar du profil minecraft
+            avatar_image_view.setVisible(false);
+
+            // On recréer l'image du profil minecraft
+            Image new_head_image = new Image("https://mc-heads.net/player/" + username_info + "/70");
+            ImageView new_avatar_image_view = new ImageView(new_head_image);
+
+            minecraft_user_container.add(new_avatar_image_view, 0, 0);
+            GridPane.setHalignment(new_avatar_image_view, HPos.CENTER);
+
+            // On instancie la variable disant que l'utilisateur
+            // souhaite garder se profil minecraft pour l'inscription
+            is_searching_uuid.set(false);
+
+        });
+
+        // On créer l'évènement du bouton radio UUID_incorrect "Non"
+        UUID_incorrect.setOnAction(event -> {
+
+            // On rend visible le formulaire de recherche de profil minecraft
+            search_container.setVisible(true);
+
+            // On réinitialise le formulaire de recherche
+            search_field.setText("");
+
+            // On réinitialise au cas ou l'image de l'avatar du profil minecraft
+            avatar_image_view.setVisible(false);
+
+            // On recréer l'image du profil minecraft
+            Image new_head_image = new Image("https://mc-heads.net/player/player/70");
+            ImageView new_avatar_image_view = new ImageView(new_head_image);
+
+            minecraft_user_container.add(new_avatar_image_view, 0, 0);
+            GridPane.setHalignment(new_avatar_image_view, HPos.CENTER);
+
+            // On désactive le bouton
+            validation_button.setStyle("-fx-background-color: gray; -fx-font-size: 24px;");
+            validation_button.setDisable(true);
+
+            // On instancie la variable disant que l'utilisateur veut rechercher son profil
+            is_searching_uuid.set(true);
+
         });
 
         // On execute l'évenement pour inscrire l'utilisateur sur la base de données
@@ -270,27 +311,39 @@ public class UUIDValidatorView {
                 // Si l'utilisateur ne cherche pas son profil minecraft on utilise alors son nom d'utilisateur
                 // renseigner lors de l'inscription
                 // -----------------------------------------------------------------------------------------------
-                // On récupere l'uuid de l'utilisateur avec son nom d'utilisateur sur l'api
+                // On inscrit l'utilisateur sur la base de données
+                try {
+                    AddUserBDD.AddUserBDD(stage,
+                            username_info,
+                            password_info,
+                            mail_info,
+                            uuid
+                    );
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
 
-
-                AddUserBDD.AddUserBDD(username_info,
-                        password_info,
-                        mail_info,
-                        uuid
-                );
             }else{
-                // Si l'utilisateur veut rechercher son profil minecraft et la déjà trouver dans l'API de recherche
+                // Sinon si l'utilisateur veut rechercher son profil minecraft et la déjà trouver dans l'API de recherche
+                // -----------------------------------------------------------------------------------------------
+                // On réucupére le formulaire pour récupérer l'uuid de l'utilisateur
                 try {
                     uuid = CallMinecraftAPI.getUUIDfromName(search_field.getText());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
-                AddUserBDD.AddUserBDD(username_info,
-                        password_info,
-                        mail_info,
-                        uuid
-                );
+                // On inscrit l'utilisateur sur la base de données
+                try {
+                    AddUserBDD.AddUserBDD(stage,
+                            username_info,
+                            password_info,
+                            mail_info,
+                            uuid
+                    );
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -307,11 +360,18 @@ public class UUIDValidatorView {
 
         // On ajoute les conteneurs à la validation grid
         UUIDvalidation_grid.add(minecraft_user_container, 0, 0);
-        UUIDvalidation_grid.add(text_container, 1, 0);
+        UUIDvalidation_grid.add(text_container, 2, 0);
         UUIDvalidation_grid.add(validation_button, 0, 1);
+
+        GridPane.setConstraints(minecraft_user_container, 0, 0, 2, 1);
+        GridPane.setFillWidth(minecraft_user_container, true);
         GridPane.setColumnSpan(validation_button, 2);
+        GridPane.setHalignment(validation_button, HPos.CENTER);
+
+        GridPane.setHgrow(UUIDvalidation_grid, Priority.ALWAYS);
 
         root.getChildren().addAll(container, UUIDvalidation_grid);
+
 
         stage.setScene(new Scene(root));
         stage.show();

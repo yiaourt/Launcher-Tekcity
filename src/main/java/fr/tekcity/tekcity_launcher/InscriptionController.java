@@ -210,33 +210,8 @@ public class InscriptionController implements EventHandler<ActionEvent> {
                                     }else{
 
                                         // Si toutes les conditions sont remplis on demande à l'utilisateur de vérifier que c'est bien son compte minecraft
-
                                         UUIDValidatorView uuid_validation_view = new UUIDValidatorView(stage);
 
-                                        /* Si toutes les conditions sont remplis on créer l'utilisateur sur la base de données
-                                        //
-                                        // On Hash le mot de passe avec BCrypt
-                                        String hashedPassword = BCrypt.hashpw(password_1, BCrypt.gensalt());
-
-                                        // Requête SQL pour insérer l'utilisateur
-                                        String sql = "INSERT INTO users (username, mail, passpass) VALUES (?, ?, ?)";
-
-                                        PreparedStatement insertUser = connexion.prepareStatement(sql);
-
-                                        insertUser.setString(1, username);
-                                        insertUser.setString(2, mail);
-                                        insertUser.setString(3, hashedPassword);
-
-                                        // Exécution de la requête
-                                        int rowsInserted = insertUser.executeUpdate();
-
-                                        if (rowsInserted > 0) { // Si l'utilisateur est correctement enregistré dans la base de données
-                                            Main main_controller = new Main();
-                                            main_controller.switchToScene("LoginView", stage);
-                                        }
-
-                                        // Fermeture de la connexion
-                                        connexion.close();*/
                                     }
                                 }
                             } catch (SQLException e) { // Si la connexion à échoué
