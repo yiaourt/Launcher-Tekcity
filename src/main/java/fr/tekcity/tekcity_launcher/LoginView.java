@@ -1,5 +1,6 @@
 package fr.tekcity.tekcity_launcher;
 
+import fr.tekcity.tekcity_launcher.functions.InitBackgroundView;
 import insidefx.undecorator.Undecorator;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
@@ -28,7 +29,7 @@ import insidefx.undecorator.UndecoratorScene;
 import static javafx.scene.layout.BackgroundPosition.CENTER;
 import static javafx.scene.layout.BackgroundRepeat.REPEAT;
 
-public class LoginView extends Parent {
+public class LoginView extends Region {
 
     private Stage stage;
 
@@ -36,9 +37,10 @@ public class LoginView extends Parent {
 
         // On créer ci-dessous l'inteface de connexion
         //-------------------------------------------------------------------------
-        // On initialise l'effet de flou
 
-        BoxBlur blur = new BoxBlur(20, 0, 3);
+        // On créer la route en initiant le fond de l'application
+        InitBackgroundView initBackgroundView = new InitBackgroundView();
+        StackPane root = initBackgroundView.InitBackgroundView(stage);
 
         // On créer un Pane pour faire une boite de couleur noir pour le formulaire de connexion
         Pane loginBox = new Pane();
@@ -161,34 +163,12 @@ public class LoginView extends Parent {
         // On aligne les élements
         loginGrid.setStyle("-fx-alignment: center;");
 
-        // Crée une StackPane pour superposer l'image de fond floue et la zone de connexion
-        StackPane root = new StackPane();
-        root.setStyle("-fx-background-size: cover;");
-
-        // On change la couleur de fond d'écran
-        Pane black_bg = new Pane();
-        BackgroundFill black_bg_fill = new BackgroundFill(Color.BLACK, null, null);
-        Background background = new Background(black_bg_fill);
-        black_bg.setBackground(background);
-
-        //Créer une image de fond
-        Pane img_bg = new HBox();
-        img_bg.setBackground(new Background(new BackgroundImage(new Image("file:src/images/BG_tekcity_launcher.jpg"), REPEAT, REPEAT, CENTER,
-                new BackgroundSize(100, 100, true, true, true, true))));
-
-        // Ajoute un effet de flou sur l'image de fond
-        img_bg.setEffect(blur);
-
-        // On créer une animation d'apparition
-        FadeTransition fade_background = new FadeTransition(Duration.millis(4500), img_bg);
-        fade_background.setFromValue(0.0);
-        fade_background.setToValue(1.0);
-        fade_background.play();
-
-        // On groupe les éléments dans la root
-        root.getChildren().addAll(black_bg, img_bg, loginBox, loginGrid);
+        // On groupe les éléments dans la racine
+        root.getChildren().addAll(loginBox, loginGrid);
 
         stage.setScene(new Scene(root));
+
+
 
         stage.show();
     }

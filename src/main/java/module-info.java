@@ -4,7 +4,6 @@ module fr.tekcity.tekcity_launcher {
     requires javafx.web;
     requires javafx.swing;
 
-    requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires org.kordamp.bootstrapfx.core;
@@ -26,7 +25,7 @@ module fr.tekcity.tekcity_launcher {
     requires unirest.java;
     requires com.google.gson;
 
-    requires CustomStage;
+    requires jbcrypt;
 
     requires undecorator;
 

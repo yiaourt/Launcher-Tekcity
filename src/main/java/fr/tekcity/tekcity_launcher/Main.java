@@ -1,15 +1,16 @@
 package fr.tekcity.tekcity_launcher;
 
+import fr.tekcity.tekcity_launcher.UUIDValidatorView;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import lk.vivoxalabs.customstage.CustomStage;
-import lk.vivoxalabs.customstage.CustomStageBuilder;
 
 
+import java.io.InputStream;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -21,10 +22,10 @@ public class Main extends Application {
 
         this.stage = stage;
 
+        stage.getIcons().add(new Image("file:src/images/logo.png"));
+
         // Initialisation de la scène selon la connexion de l'utilisateur
         switchToScene("LoginView", getStage());
-
-        stage.getScene().getStylesheets().add("file:src/main/resources/css/toolbar.css");
 
         // Taille de la fenêtre
         stage.setMinWidth(966);
