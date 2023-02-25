@@ -3,6 +3,9 @@ module fr.tekcity.tekcity_launcher {
     requires javafx.fxml;
     requires javafx.web;
     requires javafx.swing;
+    requires javafx.base;
+
+    requires java.prefs;
 
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
@@ -27,10 +30,12 @@ module fr.tekcity.tekcity_launcher {
 
     requires jbcrypt;
 
-    requires undecorator;
-
 
 
     opens fr.tekcity.tekcity_launcher to javafx.fxml;
     exports fr.tekcity.tekcity_launcher;
+    exports fr.tekcity.tekcity_launcher.view;
+    opens fr.tekcity.tekcity_launcher.view to javafx.fxml;
+    exports fr.tekcity.tekcity_launcher.controller;
+    opens fr.tekcity.tekcity_launcher.controller to javafx.fxml;
 }

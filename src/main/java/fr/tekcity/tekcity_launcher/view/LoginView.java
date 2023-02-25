@@ -1,7 +1,8 @@
-package fr.tekcity.tekcity_launcher;
+package fr.tekcity.tekcity_launcher.view;
 
+import fr.tekcity.tekcity_launcher.controller.LoginController;
+import fr.tekcity.tekcity_launcher.Main;
 import fr.tekcity.tekcity_launcher.functions.InitBackgroundView;
-import insidefx.undecorator.Undecorator;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -9,25 +10,15 @@ import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import insidefx.undecorator.UndecoratorScene;
-
-import static javafx.scene.layout.BackgroundPosition.CENTER;
-import static javafx.scene.layout.BackgroundRepeat.REPEAT;
 
 public class LoginView extends Region {
 

@@ -11,11 +11,9 @@ import javafx.util.Duration;
 
 public class InitBackgroundView {
 
-    private Stage stage;
 
     public StackPane InitBackgroundView(Stage stage){
 
-        this.stage = stage;
 
         // Fonction qui initialise l'arrière plan de fond de l'application
         // ----------------------------------------------------------------

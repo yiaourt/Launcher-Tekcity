@@ -1,5 +1,7 @@
-package fr.tekcity.tekcity_launcher;
+package fr.tekcity.tekcity_launcher.view;
 
+import fr.tekcity.tekcity_launcher.controller.InscriptionController;
+import fr.tekcity.tekcity_launcher.Main;
 import fr.tekcity.tekcity_launcher.functions.InitBackgroundView;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -9,28 +11,17 @@ import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-
-import static javafx.scene.layout.BackgroundPosition.CENTER;
-import static javafx.scene.layout.BackgroundRepeat.REPEAT;
 
 
 public class InscriptionView {

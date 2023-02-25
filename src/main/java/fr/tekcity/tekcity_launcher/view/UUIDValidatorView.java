@@ -1,5 +1,6 @@
-package fr.tekcity.tekcity_launcher;
+package fr.tekcity.tekcity_launcher.view;
 
+import fr.tekcity.tekcity_launcher.controller.InscriptionController;
 import fr.tekcity.tekcity_launcher.functions.AddUserBDD;
 import fr.tekcity.tekcity_launcher.functions.CallMinecraftAPI;
 import fr.tekcity.tekcity_launcher.functions.InitBackgroundView;
@@ -12,36 +13,23 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.awt.datatransfer.Clipboard;
-import java.awt.font.TextAttribute;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.awt.font.TextAttribute.UNDERLINE;
-import static javafx.scene.layout.BackgroundPosition.CENTER;
-import static javafx.scene.layout.BackgroundRepeat.REPEAT;
 
 public class UUIDValidatorView {
 
@@ -371,7 +359,6 @@ public class UUIDValidatorView {
         GridPane.setHgrow(UUIDvalidation_grid, Priority.ALWAYS);
 
         root.getChildren().addAll(container, UUIDvalidation_grid);
-
 
         stage.setScene(new Scene(root));
         stage.show();

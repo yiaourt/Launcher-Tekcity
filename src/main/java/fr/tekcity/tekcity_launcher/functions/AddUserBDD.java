@@ -4,6 +4,8 @@ import fr.tekcity.tekcity_launcher.Main;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.prefs.Preferences;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -42,11 +44,16 @@ public class AddUserBDD {
 
         if (rowsInserted > 0) { // Si l'utilisateur est correctement enregistré dans la base de données
 
-            // On le redirige vers la page d'accueil avec une alerte
+            // Récupére les préférences de l'utilisateur
+            Preferences preferences = Preferences.userNodeForPackage(Main.class);
+
+            // Sauvegarde les préférences de la session
+            preferences.put("username", username);
+            preferences.putBoolean("is_logged_in", true);
+
+            // On le redirige vers la page d'accueil
             Main main_controller = new Main();
-            main_controller.switchToScene("HomeView", stage);
-
-
+            main_controller.switchToScene("LoginView", stage);
         }
 
         // Fermeture de la connexion

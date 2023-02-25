@@ -1,4 +1,4 @@
-package fr.tekcity.tekcity_launcher;
+package fr.tekcity.tekcity_launcher.controller;
 
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;

@@ -1,6 +1,7 @@
-package fr.tekcity.tekcity_launcher;
+package fr.tekcity.tekcity_launcher.controller;
 
 import fr.tekcity.tekcity_launcher.functions.ConnexionBD;
+import fr.tekcity.tekcity_launcher.view.UUIDValidatorView;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
