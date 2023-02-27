@@ -18,6 +18,8 @@ module fr.tekcity.tekcity_launcher {
     requires com.jfoenix;
     requires MaterialFX;
 
+    requires org.jetbrains.annotations;
+
     requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.coreui;
@@ -29,8 +31,6 @@ module fr.tekcity.tekcity_launcher {
     requires com.google.gson;
 
     requires jbcrypt;
-
-
 
     opens fr.tekcity.tekcity_launcher to javafx.fxml;
     exports fr.tekcity.tekcity_launcher;

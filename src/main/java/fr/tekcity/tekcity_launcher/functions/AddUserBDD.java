@@ -1,6 +1,7 @@
 package fr.tekcity.tekcity_launcher.functions;
 
 import fr.tekcity.tekcity_launcher.Main;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -18,7 +19,7 @@ public class AddUserBDD {
     private String email;
     private String UUID;
 
-    public static void AddUserBDD(Stage stage, String username, String password, String email, String UUID) throws SQLException {
+    public static void AddUserBDD(Stage stage, StackPane root, String username, String password, String email, String UUID) throws SQLException{
 
         System.out.println(username + " " + password + " " + email + " " + UUID);
 
@@ -49,11 +50,13 @@ public class AddUserBDD {
 
             // Sauvegarde les préférences de la session
             preferences.put("username", username);
+            preferences.put("mail", email);
+            preferences.put("uuid_minecraft", UUID);
             preferences.putBoolean("is_logged_in", true);
 
             // On le redirige vers la page d'accueil
             Main main_controller = new Main();
-            main_controller.switchToScene("LoginView", stage);
+            main_controller.switchToScene("LoginView", stage, root);
         }
 
         // Fermeture de la connexion

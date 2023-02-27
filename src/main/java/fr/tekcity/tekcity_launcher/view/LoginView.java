@@ -2,15 +2,15 @@ package fr.tekcity.tekcity_launcher.view;
 
 import fr.tekcity.tekcity_launcher.controller.LoginController;
 import fr.tekcity.tekcity_launcher.Main;
-import fr.tekcity.tekcity_launcher.functions.InitBackgroundView;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.effect.InnerShadow;
@@ -20,18 +20,16 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+
 public class LoginView extends Region {
 
     private Stage stage;
+    private StackPane root;
 
-    public LoginView(Stage stage) {
+    public LoginView(Stage stage, StackPane root){
 
         // On créer ci-dessous l'inteface de connexion
         //-------------------------------------------------------------------------
-
-        // On créer la route en initiant le fond de l'application
-        InitBackgroundView initBackgroundView = new InitBackgroundView();
-        StackPane root = initBackgroundView.InitBackgroundView(stage);
 
         // On créer un Pane pour faire une boite de couleur noir pour le formulaire de connexion
         Pane loginBox = new Pane();
@@ -56,7 +54,7 @@ public class LoginView extends Region {
 
         // On créer une animation d'apparition
         FadeTransition fade_login = new FadeTransition(Duration.millis(500), loginBox);
-        fade_login.setFromValue(0.0);
+        fade_login.setFromValue(0.5);
         fade_login.setToValue(1.0);
         fade_login.play();
 
@@ -142,7 +140,8 @@ public class LoginView extends Region {
         inscription_lien.setOnAction(event -> {
 
             Main main_controller = new Main();
-            main_controller.switchToScene("InscriptionView", stage);
+            main_controller.switchToScene("InscriptionView", stage, root);
+
         });
 
         // On ajoute les éléments à la grille
@@ -154,13 +153,21 @@ public class LoginView extends Region {
         // On aligne les élements
         loginGrid.setStyle("-fx-alignment: center;");
 
+        // On clear la root en conservant le webpane de particules en arrière plan
+        ObservableList<Node> children = root.getChildren();
+        for (int i = children.size() - 1; i >= 0; i--) {
+            Node node = children.get(i);
+            if (!(node.getId().equals("webPane"))) {
+                children.remove(i); // On enlève tous les éléments sauf le webPane
+            }
+        }
+
+        // On créer les identifiants pour pouvoir les supprimmer dans une prochaine scène
+        loginBox.setId("loginBox");
+        loginGrid.setId("loginGrid");
+
         // On groupe les éléments dans la racine
         root.getChildren().addAll(loginBox, loginGrid);
 
-        stage.setScene(new Scene(root));
-
-
-
-        stage.show();
     }
 }

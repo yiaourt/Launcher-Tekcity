@@ -11,8 +11,10 @@ import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -24,18 +26,16 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
+
 public class InscriptionView {
 
     private Stage stage;
+    private StackPane root;
 
-    public InscriptionView(Stage stage) {
+    public InscriptionView(Stage stage, StackPane root){
 
         // On créer ci-dessous l'inteface d"inscription
         //-------------------------------------------------------------------------
-
-        // On créer la route en initiant le fond de l'application
-        InitBackgroundView initBackgroundView = new InitBackgroundView();
-        StackPane root = initBackgroundView.InitBackgroundView(stage);
 
         // On créer un Pane pour faire une boite de couleur noir pour le formulaire
         Pane inscriptionBox = new Pane();
@@ -60,7 +60,7 @@ public class InscriptionView {
 
         // On créer une animation d'apparition
         FadeTransition fade_inscription = new FadeTransition(Duration.millis(500), inscriptionBox);
-        fade_inscription.setFromValue(0.0);
+        fade_inscription.setFromValue(0.5);
         fade_inscription.setToValue(1.0);
         fade_inscription.play();
 
@@ -209,12 +209,13 @@ public class InscriptionView {
         connexion_lien.setOnAction(event -> {
 
             Main main_controller = new Main();
-            main_controller.switchToScene("LoginView", stage);
+            main_controller.switchToScene("LoginView", stage, root);
+
         });
 
         // Créer un évenement au bouton
         inscriptionButton.setOnAction(
-                new InscriptionController(stage, userNameField, mailField, passwordField_1, passwordField_2, errorMessage)
+                new InscriptionController(stage, root, userNameField, mailField, passwordField_1, passwordField_2, errorMessage)
         );
         ///////////////////////////////////////////////////////////////////
 
@@ -230,10 +231,21 @@ public class InscriptionView {
         // On aligne les élements
         inscriptionGrid.setStyle("-fx-alignment: center;");
 
-        // On groupe les éléments dans la root
-        root.getChildren().addAll( inscriptionBox, inscriptionGrid);
+        // On clear la root en conservant le webpane de particules en arrière plan
+        ObservableList<Node> children = root.getChildren();
+        for (int i = children.size() - 1; i >= 0; i--) {
+            Node node = children.get(i);
+            if (!(node.getId().equals("webPane"))) {
+                children.remove(i); // On enlève tous les éléments sauf le webPane
+            }
+        }
 
-        stage.setScene(new Scene(root));
-        stage.show();
+        // On créer les identifiants pour pouvoir les supprimmer dans une prochaine scène
+        inscriptionBox.setId("inscriptionBox");
+        inscriptionGrid.setId("inscriptionGrid");
+
+        // On groupe les éléments dans la root
+        root.getChildren().addAll(inscriptionBox, inscriptionGrid);
+
     }
 }

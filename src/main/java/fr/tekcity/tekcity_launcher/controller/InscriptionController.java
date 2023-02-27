@@ -13,12 +13,12 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-
 import java.sql.*;
 
 public class InscriptionController implements EventHandler<ActionEvent> {
 
     private static Stage stage;
+    private static StackPane root;
 
     private static MFXTextField usernameField;
     private static MFXTextField mailField;
@@ -29,12 +29,14 @@ public class InscriptionController implements EventHandler<ActionEvent> {
 
 
     public InscriptionController(Stage stage,
+                                 StackPane root,
                                  MFXTextField usernameField,
                                  MFXTextField mailField,
                                  MFXPasswordField passwordField_1,
                                  MFXPasswordField passwordField_2,
                                  Label errorMessage) {
         InscriptionController.stage = stage;
+        InscriptionController.root = root;
         InscriptionController.usernameField = usernameField;
         InscriptionController.mailField = mailField;
         InscriptionController.passwordField_1 = passwordField_1;
@@ -211,7 +213,7 @@ public class InscriptionController implements EventHandler<ActionEvent> {
                                     }else{
 
                                         // Si toutes les conditions sont remplis on demande à l'utilisateur de vérifier que c'est bien son compte minecraft
-                                        UUIDValidatorView uuid_validation_view = new UUIDValidatorView(stage);
+                                        UUIDValidatorView uuid_validation_view = new UUIDValidatorView(stage, root);
 
                                     }
                                 }

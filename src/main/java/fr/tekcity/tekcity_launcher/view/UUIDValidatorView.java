@@ -40,7 +40,7 @@ public class UUIDValidatorView {
 
     private String uuid;
 
-    public UUIDValidatorView(Stage stage){
+    public UUIDValidatorView(Stage stage, StackPane root) {
 
         // On commence par récuperer les données d'inscription
         String[] user_info_inscription = InscriptionController.getInscriptionUserInfo();
@@ -59,9 +59,6 @@ public class UUIDValidatorView {
 
         // On demande ci-dessous de confirmer l'UUID de l'utilisateur avec une API
         //-------------------------------------------------------------------------
-
-        InitBackgroundView initBackgroundView = new InitBackgroundView();
-        StackPane root = initBackgroundView.InitBackgroundView(stage);
 
         // Bordure
         Border border = new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, null, new BorderWidths(3)));
@@ -302,6 +299,7 @@ public class UUIDValidatorView {
                 // On inscrit l'utilisateur sur la base de données
                 try {
                     AddUserBDD.AddUserBDD(stage,
+                            root,
                             username_info,
                             password_info,
                             mail_info,
@@ -324,6 +322,7 @@ public class UUIDValidatorView {
                 // On inscrit l'utilisateur sur la base de données
                 try {
                     AddUserBDD.AddUserBDD(stage,
+                            root,
                             username_info,
                             password_info,
                             mail_info,
