@@ -82,7 +82,7 @@ public class Main extends Application {
         if(is_logged){
 
             // Initialisation de la scène d'accueil
-            switchToScene("LoginView", getStage(), root);
+            switchToScene("HomeView", getStage(), root);
 
         }else{ // Si l'utilisateur n'est pas connecté
 

@@ -1,7 +1,9 @@
 package fr.tekcity.tekcity_launcher.view;
 
 import fr.tekcity.tekcity_launcher.functions.InitBackgroundView;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -31,12 +33,21 @@ public class HomeView extends Region {
         AnchorPane.setLeftAnchor(game_panel, 0.0);
         AnchorPane.setBottomAnchor(game_panel, 0.0);
 
+        // On clear la root en conservant le webpane de particules en arrière plan
+        ObservableList<Node> children = root.getChildren();
+        for (int i = children.size() - 1; i >= 0; i--) {
+            Node node = children.get(i);
+            if (!(node.getId().equals("webPane"))) {
+                children.remove(i); // On enlève tous les éléments sauf le webPane
+            }
+        }
+
+        // On créer les identifiants pour pouvoir les supprimmer dans une prochaine scène
+        game_box.setId("game_box");
+
         // On groupe les éléments dans la racine
         root.getChildren().add(game_box);
 
-        stage.setScene(new Scene(root));
-
-        stage.show();
 
     }
 }

@@ -11,9 +11,11 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -117,8 +119,6 @@ public class UUIDValidatorView {
         minecraft_user_container.add(avatar_image_view, 0, 0);
         minecraft_user_container.add(minecraft_username, 0, 1);
 
-        GridPane.setHalignment(avatar_image_view, HPos.CENTER);
-
         // On créer un conteneur pour le texte de la validation de l'UUID de l'utilisateur
         GridPane text_container = new GridPane();
 
@@ -197,7 +197,7 @@ public class UUIDValidatorView {
 
             pause.setOnFinished(event -> {
                 // Lorsque le texte change on modifie l'avatar du profil minecraft
-                avatar_image_view.setVisible(false);
+                minecraft_user_container.getChildren().remove(avatar_image_view);
 
                 // On recréer l'image du profil minecraft
                 Image new_head_image = new Image("https://mc-heads.net/player/" + newValue + "/70");
@@ -246,7 +246,7 @@ public class UUIDValidatorView {
             search_container.setVisible(false);
 
             // On réinitialise au cas ou l'image de l'avatar du profil minecraft
-            avatar_image_view.setVisible(false);
+            minecraft_user_container.getChildren().remove(avatar_image_view);
 
             // On recréer l'image du profil minecraft
             Image new_head_image = new Image("https://mc-heads.net/player/" + username_info + "/70");
@@ -271,14 +271,15 @@ public class UUIDValidatorView {
             search_field.setText("");
 
             // On réinitialise au cas ou l'image de l'avatar du profil minecraft
-            avatar_image_view.setVisible(false);
+            minecraft_user_container.getChildren().remove(avatar_image_view);
 
             // On recréer l'image du profil minecraft
-            Image new_head_image = new Image("https://mc-heads.net/player/player/70");
+            Image new_head_image = new Image("https://mc-heads.net/player/null/70");
             ImageView new_avatar_image_view = new ImageView(new_head_image);
 
             minecraft_user_container.add(new_avatar_image_view, 0, 0);
             GridPane.setHalignment(new_avatar_image_view, HPos.CENTER);
+            GridPane.setHalignment(avatar_image_view, HPos.CENTER);
 
             // On désactive le bouton
             validation_button.setStyle("-fx-background-color: gray; -fx-font-size: 24px;");
@@ -357,10 +358,20 @@ public class UUIDValidatorView {
 
         GridPane.setHgrow(UUIDvalidation_grid, Priority.ALWAYS);
 
-        root.getChildren().addAll(container, UUIDvalidation_grid);
+        // On clear la root en conservant le webpane de particules en arrière plan
+        ObservableList<Node> children = root.getChildren();
+        for (int i = children.size() - 1; i >= 0; i--) {
+            Node node = children.get(i);
+            if (!(node.getId().equals("webPane"))) {
+                children.remove(i); // On enlève tous les éléments sauf le webPane
+            }
+        }
 
-        stage.setScene(new Scene(root));
-        stage.show();
+        // On créer les identifiants pour pouvoir les supprimmer dans une prochaine scène
+        container.setId("container");
+        UUIDvalidation_grid.setId("UUIDvalidation_grid");
+
+        root.getChildren().addAll(container, UUIDvalidation_grid);
 
     }
 }

@@ -54,7 +54,7 @@ public class LoginView extends Region {
 
         // On créer une animation d'apparition
         FadeTransition fade_login = new FadeTransition(Duration.millis(500), loginBox);
-        fade_login.setFromValue(0.5);
+        fade_login.setFromValue(0.8);
         fade_login.setToValue(1.0);
         fade_login.play();
 

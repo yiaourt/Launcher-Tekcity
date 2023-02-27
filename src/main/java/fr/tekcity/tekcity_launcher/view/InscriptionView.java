@@ -12,6 +12,7 @@ import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -60,7 +61,7 @@ public class InscriptionView {
 
         // On créer une animation d'apparition
         FadeTransition fade_inscription = new FadeTransition(Duration.millis(500), inscriptionBox);
-        fade_inscription.setFromValue(0.5);
+        fade_inscription.setFromValue(0.8);
         fade_inscription.setToValue(1.0);
         fade_inscription.play();
 
@@ -227,6 +228,8 @@ public class InscriptionView {
         inscriptionGrid.add(buttonBox, 0, 10);
         inscriptionGrid.add(errorMessage, 0, 11);
         inscriptionGrid.add(connexion_lien, 0, 12);
+
+        GridPane.setHalignment(errorMessage, HPos.CENTER);
 
         // On aligne les élements
         inscriptionGrid.setStyle("-fx-alignment: center;");
