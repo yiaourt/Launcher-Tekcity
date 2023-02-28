@@ -40,7 +40,7 @@ public class InscriptionView {
 
         // On créer un Pane pour faire une boite de couleur noir pour le formulaire
         Pane inscriptionBox = new Pane();
-        inscriptionBox.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        inscriptionBox.setBackground(new Background(new BackgroundFill(Color.rgb(7, 8, 7), CornerRadii.EMPTY, Insets.EMPTY)));
         inscriptionBox.setMaxHeight(500);
         inscriptionBox.setMaxWidth(400);
 

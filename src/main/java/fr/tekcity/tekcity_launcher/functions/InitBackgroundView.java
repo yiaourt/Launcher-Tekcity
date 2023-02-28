@@ -26,8 +26,7 @@ public class InitBackgroundView {
 
         // Fonction qui initialise l'arrière plan de fond de l'application
         // ----------------------------------------------------------------
-        // On initialise l'effet de flou
-        BoxBlur blur = new BoxBlur(10, 0, 3);
+
 
         // Crée une StackPane pour superposer l'image de fond floue et la zone d'inteface par la suite
         StackPane root = new StackPane();

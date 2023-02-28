@@ -19,6 +19,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.materialdesign.MaterialDesign;
 
 
 public class LoginView extends Region {
@@ -33,7 +35,7 @@ public class LoginView extends Region {
 
         // On créer un Pane pour faire une boite de couleur noir pour le formulaire de connexion
         Pane loginBox = new Pane();
-        loginBox.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        loginBox.setBackground(new Background(new BackgroundFill(Color.rgb(7, 8, 7), CornerRadii.EMPTY, Insets.EMPTY)));
         loginBox.setMaxHeight(400);
         loginBox.setMaxWidth(400);
 
@@ -118,14 +120,28 @@ public class LoginView extends Region {
         passwordField.setMaxHeight(10);
         ///////////////////////////////////////////////////////////
 
-        // Boutton
-        BorderPane buttonBox = new BorderPane();
+        // Box pour les boutons de connexion
+        GridPane buttonBox = new GridPane();
+
+        // Boutton de login avec TekCity
         MFXButton loginButton = new MFXButton("Se connecter");
         loginButton.setStyle("-fx-background-color: skyblue; -fx-font-size: 24px;");
 
-        // Centre le bouton
-        BorderPane.setAlignment(loginButton, Pos.CENTER);
-        buttonBox.setCenter(loginButton);
+        // Icone pour le bouton connexion microsoft
+        FontIcon icon = new FontIcon(MaterialDesign.MDI_MINECRAFT);
+        icon.setIconSize(40);
+
+        // Bouton de login avec microsoft
+        MFXButton microsoftLoginButton = new MFXButton("");
+        microsoftLoginButton.setGraphic(icon);
+        microsoftLoginButton.setStyle("-fx-background-color: skyblue;");
+
+        // ajout des boutons dans la box
+        buttonBox.add(loginButton, 0, 0);
+        buttonBox.add(microsoftLoginButton, 1, 0);
+
+        // Espacements des boutons
+        GridPane.setMargin(loginButton, new Insets(0, 10, 0, 0));
 
         // Créer un évenement au bouton
         loginButton.setOnAction(
