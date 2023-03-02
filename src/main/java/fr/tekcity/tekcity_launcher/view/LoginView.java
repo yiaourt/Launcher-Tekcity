@@ -1,13 +1,17 @@
 package fr.tekcity.tekcity_launcher.view;
 
+import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
+import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.tekcity.tekcity_launcher.controller.LoginController;
 import fr.tekcity.tekcity_launcher.Main;
+//import fr.tekcity.tekcity_launcher.functions.ConnectMicrosoftUser;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -21,6 +25,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign.MaterialDesign;
+
+
+import java.util.Objects;
+import java.util.prefs.Preferences;
 
 
 public class LoginView extends Region {
@@ -65,10 +73,7 @@ public class LoginView extends Region {
         loginBox.setBorder(border);
 
         // On charge la/les polices
-        Font tektur = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Tektur-Bold.ttf"), 80);
-        Font obtuse = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Obtuse.ttf"), 20);
-        Font gomarice = Font.loadFont(this.getClass().getResourceAsStream("/fonts/gomarice_super_g_type_2.ttf"), 20);
-        Font g7 = Font.loadFont(this.getClass().getResourceAsStream("/fonts/G7_Cube_5.ttf"), 20);
+        Font tektur = Font.loadFont(LoginView.class.getResourceAsStream("/fonts/Tektur-Bold.ttf"), 80);
 
         // On créer un titre au Panel
         Label titre = new Label("Tekcity");
@@ -78,7 +83,7 @@ public class LoginView extends Region {
         titre.setEffect(shadow_text);
 
         // Boite pour le titre
-        VBox boxTitre = new VBox(15, titre);
+        VBox boxTitre = new VBox(25, titre);
         boxTitre.setAlignment(Pos.TOP_CENTER);
         boxTitre.setPrefSize(400, 400);
 
@@ -86,15 +91,14 @@ public class LoginView extends Region {
 
         // Créer un formulaire de connexion
         GridPane loginGrid = new GridPane();
-        loginGrid.setHgap(10);
         loginGrid.setVgap(10);
         loginGrid.setMaxHeight(400);
         loginGrid.setMaxWidth(400);
 
         // Username
         MFXTextField userNameField = new MFXTextField();
-        userNameField.setPromptText("Nom d'utilisateur");
-        userNameField.setStyle("-fx-font-size: 20;");
+        userNameField.setPromptText("nom d'utilisateur ou adresse mail");
+        userNameField.setStyle("-fx-font-size: 14;");
         userNameField.setFloatMode(FloatMode.BORDER);
         userNameField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
         userNameField.setContextMenuDisabled(true);
@@ -109,7 +113,7 @@ public class LoginView extends Region {
         // Password
         MFXPasswordField passwordField = new MFXPasswordField();
         passwordField.setPromptText("Mot de Passe");
-        passwordField.setStyle("-fx-font-size: 20;");
+        passwordField.setStyle("-fx-font-size: 14;");
         passwordField.setFloatMode(FloatMode.BORDER);
         passwordField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
         passwordField.setContextMenuDisabled(true);
@@ -120,8 +124,37 @@ public class LoginView extends Region {
         passwordField.setMaxHeight(10);
         ///////////////////////////////////////////////////////////
 
+        final Label errorMessage = new Label();
+        errorMessage.setTextFill(Color.RED);
+        errorMessage.setFont(new Font("Helvetica", 18));
+
+        // Récupére les préférences de l'utilisateur
+        Preferences preferences = Preferences.userNodeForPackage(Main.class);
+
+        String error = preferences.get("MS_error", ""); // Récupère l'erreur MS pour la traiter, si elle existe
+
+        // Condition pour l'erreur microsoft authentification
+        if(!Objects.equals(error, "")) {
+            // erreur icone
+            FontIcon errorIcon = new FontIcon("fa-exclamation-triangle:20");
+            errorIcon.setStyle("-fx-fill: red; -fx-font-family: FontAwesome");
+            // erreur message
+            errorMessage.getStyleClass().add("warning-icon");
+            errorMessage.setGraphic(errorIcon);
+            errorMessage.setText(error);
+            errorMessage.setVisible(true);
+
+            // Puis on réinitialise l'erreur ms
+            preferences.remove("MS_error");
+
+        }else{
+            errorMessage.setVisible(false);
+        }
+
+
         // Box pour les boutons de connexion
         GridPane buttonBox = new GridPane();
+        buttonBox.setAlignment(Pos.CENTER);
 
         // Boutton de login avec TekCity
         MFXButton loginButton = new MFXButton("Se connecter");
@@ -135,6 +168,16 @@ public class LoginView extends Region {
         MFXButton microsoftLoginButton = new MFXButton("");
         microsoftLoginButton.setGraphic(icon);
         microsoftLoginButton.setStyle("-fx-background-color: skyblue;");
+
+        // évènement du bouton de login avec microsoft
+        microsoftLoginButton.setOnMouseClicked(event -> {
+
+            try {
+                LoadingMicrosoftView loading_ms_view = new LoadingMicrosoftView(stage, root);
+            } catch (MicrosoftAuthenticationException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         // ajout des boutons dans la box
         buttonBox.add(loginButton, 0, 0);
@@ -155,6 +198,9 @@ public class LoginView extends Region {
         inscription_lien.setFont(new Font("Helvetica", 18));
         inscription_lien.setOnAction(event -> {
 
+            // On cache l'erreur du formulaire de connexion
+            errorMessage.setVisible(false);
+
             Main main_controller = new Main();
             main_controller.switchToScene("InscriptionView", stage, root);
 
@@ -162,9 +208,17 @@ public class LoginView extends Region {
 
         // On ajoute les éléments à la grille
         loginGrid.add(userNameField, 0, 6);
-        loginGrid.add(passwordField, 0, 7);
+        loginGrid.add(passwordField, 0, 8);
+        loginGrid.add(errorMessage,0,9);
         loginGrid.add(buttonBox, 0, 10);
         loginGrid.add(inscription_lien, 0, 12);
+
+        GridPane.setHalignment(userNameField, HPos.CENTER);
+        GridPane.setHalignment(passwordField, HPos.CENTER);
+        GridPane.setHalignment(errorMessage, HPos.CENTER);
+        GridPane.setHgrow(buttonBox, Priority.ALWAYS);
+        GridPane.setHalignment(buttonBox, HPos.CENTER);
+        GridPane.setHalignment(inscription_lien, HPos.CENTER);
 
         // On aligne les élements
         loginGrid.setStyle("-fx-alignment: center;");

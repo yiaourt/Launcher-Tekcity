@@ -18,6 +18,8 @@ module fr.tekcity.tekcity_launcher {
     requires com.jfoenix;
     requires MaterialFX;
 
+    requires openauth;
+
     requires org.jetbrains.annotations;
 
     requires org.kordamp.ikonli.core;

@@ -45,9 +45,11 @@ public class Main extends Application {
 
         // On récupere la session de l'utilisateur s'il existe
         String username = preferences.get("username", "");
+        String MS_token = preferences.get("MS_token", "");
         Boolean is_logged = preferences.getBoolean("is_logged_in", false);
 
         System.out.println(username);
+        System.out.println(MS_token);
         System.out.println(is_logged);
 
         // On créer une root

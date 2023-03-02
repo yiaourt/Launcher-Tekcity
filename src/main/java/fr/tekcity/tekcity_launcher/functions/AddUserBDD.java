@@ -56,7 +56,7 @@ public class AddUserBDD {
 
             // On le redirige vers la page d'accueil
             Main main_controller = new Main();
-            main_controller.switchToScene("LoginView", stage, root);
+            main_controller.switchToScene("HomeView", stage, root);
         }
 
         // Fermeture de la connexion
