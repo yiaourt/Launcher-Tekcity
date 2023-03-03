@@ -10,6 +10,8 @@ import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -44,8 +46,8 @@ public class LoginView extends Region {
         // On créer un Pane pour faire une boite de couleur noir pour le formulaire de connexion
         Pane loginBox = new Pane();
         loginBox.setBackground(new Background(new BackgroundFill(Color.rgb(7, 8, 7), CornerRadii.EMPTY, Insets.EMPTY)));
-        loginBox.setMaxHeight(400);
-        loginBox.setMaxWidth(400);
+        loginBox.setMaxHeight(500);
+        loginBox.setMaxWidth(500);
 
         // Ombre de loginBox
         InnerShadow shadow_box = new InnerShadow();
@@ -85,7 +87,7 @@ public class LoginView extends Region {
         // Boite pour le titre
         VBox boxTitre = new VBox(25, titre);
         boxTitre.setAlignment(Pos.TOP_CENTER);
-        boxTitre.setPrefSize(400, 400);
+        boxTitre.setPrefSize(500, 500);
 
         loginBox.getChildren().add(boxTitre);
 
@@ -95,43 +97,62 @@ public class LoginView extends Region {
         loginGrid.setMaxHeight(400);
         loginGrid.setMaxWidth(400);
 
+        // Label pour des erreures de formulaire de connexion
+        final Label errorMessage = new Label();
+        errorMessage.setTextFill(Color.RED);
+        errorMessage.setFont(new Font("Helvetica", 18));
+
         // Username
         MFXTextField userNameField = new MFXTextField();
-        userNameField.setPromptText("nom d'utilisateur ou adresse mail");
-        userNameField.setStyle("-fx-font-size: 14;");
+        userNameField.setPromptText("Nom d'utilisateur ou e-mail");
+        userNameField.setStyle("-fx-font-size: 20;");
         userNameField.setFloatMode(FloatMode.BORDER);
         userNameField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
         userNameField.setContextMenuDisabled(true);
         userNameField.setPadding(new Insets(5, 5, 5, 5));
         userNameField.setId("username_login");
-        userNameField.setPrefWidth(250);
-        userNameField.setMaxWidth(250);
-        userNameField.setPrefHeight(30);
-        userNameField.setMaxHeight(30);
+        userNameField.setPrefWidth(310);
+        userNameField.setMaxWidth(310);
+        userNameField.setPrefHeight(50);
+        userNameField.setMaxHeight(50);
+
+        // On réinitialise la bordure du champs de texte si l'utilisateur écrit dedans
+        userNameField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                userNameField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+                errorMessage.setVisible(false);
+            }
+        });
         ///////////////////////////////////////////////////////////
 
         // Password
         MFXPasswordField passwordField = new MFXPasswordField();
         passwordField.setPromptText("Mot de Passe");
-        passwordField.setStyle("-fx-font-size: 14;");
+        passwordField.setStyle("-fx-font-size: 20;");
         passwordField.setFloatMode(FloatMode.BORDER);
         passwordField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
         passwordField.setContextMenuDisabled(true);
         passwordField.setPadding(new Insets(5, 5, 5, 5));
-        passwordField.setPrefWidth(250);
-        passwordField.setMaxWidth(250);
-        passwordField.setPrefHeight(10);
-        passwordField.setMaxHeight(10);
-        ///////////////////////////////////////////////////////////
+        passwordField.setPrefWidth(310);
+        passwordField.setMaxWidth(310);
+        passwordField.setPrefHeight(50);
+        passwordField.setMaxHeight(50);
 
-        final Label errorMessage = new Label();
-        errorMessage.setTextFill(Color.RED);
-        errorMessage.setFont(new Font("Helvetica", 18));
+        // On réinitialise la bordure du champs de texte si l'utilisateur écrit dedans
+        passwordField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                passwordField.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+                errorMessage.setVisible(false);
+            }
+        });
+        ///////////////////////////////////////////////////////////
 
         // Récupére les préférences de l'utilisateur
         Preferences preferences = Preferences.userNodeForPackage(Main.class);
 
-        String error = preferences.get("MS_error", ""); // Récupère l'erreur MS pour la traiter, si elle existe
+        String error = preferences.get("error", ""); // Récupère l'erreur MS pour la traiter, si elle existe
 
         // Condition pour l'erreur microsoft authentification
         if(!Objects.equals(error, "")) {
@@ -145,7 +166,7 @@ public class LoginView extends Region {
             errorMessage.setVisible(true);
 
             // Puis on réinitialise l'erreur ms
-            preferences.remove("MS_error");
+            preferences.remove("error");
 
         }else{
             errorMessage.setVisible(false);
@@ -188,7 +209,7 @@ public class LoginView extends Region {
 
         // Créer un évenement au bouton
         loginButton.setOnAction(
-                new LoginController(userNameField, passwordField)
+                new LoginController(stage, root, userNameField, passwordField, errorMessage)
         );
         ///////////////////////////////////////////////////////////////////
 
@@ -207,7 +228,7 @@ public class LoginView extends Region {
         });
 
         // On ajoute les éléments à la grille
-        loginGrid.add(userNameField, 0, 6);
+        loginGrid.add(userNameField, 0, 5);
         loginGrid.add(passwordField, 0, 8);
         loginGrid.add(errorMessage,0,9);
         loginGrid.add(buttonBox, 0, 10);

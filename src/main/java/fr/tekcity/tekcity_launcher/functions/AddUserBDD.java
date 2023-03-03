@@ -21,8 +21,6 @@ public class AddUserBDD {
 
     public static void AddUserBDD(Stage stage, StackPane root, String username, String password, String email, String UUID) throws SQLException{
 
-        System.out.println(username + " " + password + " " + email + " " + UUID);
-
         // On créer ci dessous l'utilisateur sur la base de données
         // ----------------------------------------------------------
         // On Hash le mot de passe avec BCrypt

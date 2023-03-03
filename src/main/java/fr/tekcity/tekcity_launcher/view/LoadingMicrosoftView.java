@@ -80,8 +80,7 @@ public class LoadingMicrosoftView {
             if(error != null) {
 
                 String errorMessage = error.getMessage().substring(error.getMessage().lastIndexOf(":") + 1);
-                preferences.put("MS_error", errorMessage);
-                System.out.println(errorMessage);
+                preferences.put("error", errorMessage);
 
             }
             if (response.getAccessToken() != null) {

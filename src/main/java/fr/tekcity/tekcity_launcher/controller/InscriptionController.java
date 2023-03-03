@@ -99,7 +99,7 @@ public class InscriptionController implements EventHandler<ActionEvent> {
                 // On vérifie que le password 1 n'est pas vide
                 if (password_1.isEmpty()) {
 
-                    // Si le nom d'utilisateur est vide, focus rouge sur les bords du formulaire
+                    // Si le mot de passe est vide, focus rouge sur les bords du formulaire
                     passwordField_1.requestFocus();
                     passwordField_1.selectAll();
                     passwordField_1.setBorder(new Border(new BorderStroke(Color.INDIANRED, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
