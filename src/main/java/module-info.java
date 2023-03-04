@@ -17,6 +17,7 @@ module fr.tekcity.tekcity_launcher {
     requires eu.hansolo.toolbox;
     requires com.jfoenix;
     requires MaterialFX;
+    requires org.controlsfx.controls;
 
     requires openauth;
 

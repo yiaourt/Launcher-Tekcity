@@ -47,7 +47,7 @@ public class LoginView extends Region {
         Pane loginBox = new Pane();
         loginBox.setBackground(new Background(new BackgroundFill(Color.rgb(7, 8, 7), CornerRadii.EMPTY, Insets.EMPTY)));
         loginBox.setMaxHeight(500);
-        loginBox.setMaxWidth(500);
+        loginBox.setMaxWidth(450);
 
         // Ombre de loginBox
         InnerShadow shadow_box = new InnerShadow();
@@ -87,7 +87,7 @@ public class LoginView extends Region {
         // Boite pour le titre
         VBox boxTitre = new VBox(25, titre);
         boxTitre.setAlignment(Pos.TOP_CENTER);
-        boxTitre.setPrefSize(500, 500);
+        boxTitre.setPrefSize(450, 500);
 
         loginBox.getChildren().add(boxTitre);
 

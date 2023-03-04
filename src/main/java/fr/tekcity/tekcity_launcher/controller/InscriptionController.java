@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.sql.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InscriptionController implements EventHandler<ActionEvent> {
 
@@ -53,13 +55,17 @@ public class InscriptionController implements EventHandler<ActionEvent> {
         String password_1 = passwordField_1.getText();
         String password_2 = passwordField_2.getText();
 
+        // Regex pour vérifier la conformité de l'email
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+        Matcher matcher = pattern.matcher(mail);
+
         // Vérifier le nom d'utilisateur et le mot de passe ici
         // System.out.println(username + " " + mail + " " + password_1 + " " + password_2);
 
-        // On vérifie que le nom d'utilisateur le mail et le mot de passe sont remplis dans le formulaire.
-        if (username.isEmpty()) {
+        // On vérifie que le nom d'utilisateur est remplis dans le formulaire et conforme.
+        if (username.isEmpty() || username.length() < 3 || username.length() > 12) {
 
-            // Si le nom d'utilisateur est vide, focus rouge sur les bords du formulaire
+            // Si le nom d'utilisateur est vide ou non-conforme, focus rouge sur les bords du formulaire
             usernameField.requestFocus();
             usernameField.selectAll();
             usernameField.setBorder(new Border(new BorderStroke(Color.INDIANRED, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
@@ -71,13 +77,13 @@ public class InscriptionController implements EventHandler<ActionEvent> {
             // Erreur definition
             errorMessage.getStyleClass().add("warning-icon");
             errorMessage.setGraphic(icon);
-            errorMessage.setText("Le nom d'utilisateur est vide");
+            errorMessage.setText("Erreur dans le nom d'utilisateur");
             errorMessage.setVisible(true);
 
         } else {
 
-            // On vérifie que le mail n'est pas vide
-            if (mail.isEmpty()) {
+            // On vérifie que le mail n'est pas vide est qu'il est bien conforme
+            if (mail.isEmpty() || !matcher.matches()) {
 
                 // Si le nom d'utilisateur est vide, focus rouge sur les bords du formulaire
                 mailField.requestFocus();
@@ -91,7 +97,7 @@ public class InscriptionController implements EventHandler<ActionEvent> {
                 // Erreur definition
                 errorMessage.getStyleClass().add("warning-icon");
                 errorMessage.setGraphic(icon);
-                errorMessage.setText("Le champs du mail est vide");
+                errorMessage.setText("Erreur dans le champs de l'adresse e-mail");
                 errorMessage.setVisible(true);
 
             } else {

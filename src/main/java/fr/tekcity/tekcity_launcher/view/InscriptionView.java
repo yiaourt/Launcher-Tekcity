@@ -230,6 +230,12 @@ public class InscriptionView {
         inscriptionGrid.add(connexion_lien, 0, 12);
 
         GridPane.setHalignment(errorMessage, HPos.CENTER);
+        GridPane.setHalignment(userNameField, HPos.CENTER);
+        GridPane.setHalignment(mailField, HPos.CENTER);
+        GridPane.setHalignment(passwordField_1, HPos.CENTER);
+        GridPane.setHalignment(passwordField_2, HPos.CENTER);
+        GridPane.setHalignment(buttonBox, HPos.CENTER);
+        GridPane.setHalignment(connexion_lien, HPos.CENTER);
 
         // On aligne les élements
         inscriptionGrid.setStyle("-fx-alignment: center;");
