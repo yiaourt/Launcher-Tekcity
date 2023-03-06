@@ -2,14 +2,17 @@ package fr.tekcity.tekcity_launcher.view;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXNodesList;
+import com.jfoenix.controls.JFXTextField;
 import fr.tekcity.tekcity_launcher.Main;
 import fr.tekcity.tekcity_launcher.functions.InitBackgroundView;
 import io.github.palexdev.materialfx.controls.BoundTextField;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.base.MFXLabeled;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox;
 import io.github.palexdev.materialfx.enums.ButtonType;
+import io.github.palexdev.materialfx.enums.FloatMode;
 import io.github.palexdev.materialfx.skins.MFXComboBoxSkin;
 import io.github.palexdev.materialfx.skins.MFXTextFieldSkin;
 import javafx.animation.ScaleTransition;
@@ -31,6 +34,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 import javafx.util.Duration;
@@ -38,9 +43,12 @@ import org.controlsfx.control.GridView;
 import org.controlsfx.control.spreadsheet.Grid;
 import org.jetbrains.annotations.Nullable;
 import org.kordamp.bootstrapfx.BootstrapFX;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.materialdesign.MaterialDesign;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 import java.util.prefs.Preferences;
 
 
@@ -286,11 +294,13 @@ public class HomeView extends Region {
         String features = "- Version : 1.19.2 Forge \n" +
                             "- ModPack : ATM8 Custom\n";
 
+
+
         Pane short_description_pane = new Pane();
 
         Pane description_pane = new Pane();
 
-        Pane features_pane = new Pane();
+        VBox features_pane = new VBox();
 
         Text short_description_server = new Text(short_description);
         short_description_server.wrappingWidthProperty().bind(titre_server_pane.widthProperty());
@@ -308,9 +318,18 @@ public class HomeView extends Region {
         features_server.setStyle("-fx-font-family: Helvetica; -fx-font-size: 18px;");
         features_server.setTextAlignment(TextAlignment.JUSTIFY);
 
+        WebView webview_gallery = new WebView();
+
+        WebEngine webengine_gallery = webview_gallery.getEngine();
+        webengine_gallery.load(String.valueOf(Objects.requireNonNull(getClass().getResource("/gallery/gallery.html"))));
+
+        // Courte description et longue description
         short_description_pane.getChildren().add(short_description_server);
         description_pane.getChildren().add(description_server);
+
+        // Features et Gallerie d'images
         features_pane.getChildren().add(features_server);
+        features_pane.getChildren().add(webview_gallery);
 
         // On créer les boutons et barre de progression d'installation
         BorderPane server_btn_interface = new BorderPane();
@@ -320,9 +339,34 @@ public class HomeView extends Region {
         JFXButton play_install_btn = new JFXButton("Installer");
         play_install_btn.setStyle("-fx-background-color: skyblue; -fx-font-size: 24px;");
 
-        server_btn_interface.setRight(play_install_btn);
+        // Icone pour le bouton chois de dossier
+        FontIcon icon_folder = new FontIcon(MaterialDesign.MDI_FOLDER);
+        icon_folder.setIconSize(35);
 
-        BorderPane.setAlignment(play_install_btn, Pos.BOTTOM_RIGHT);
+        JFXButton directory_chooser_btn = new JFXButton();
+        directory_chooser_btn.setStyle("-fx-background-color: skyblue;");
+        directory_chooser_btn.setGraphic(icon_folder);
+
+        MFXTextField directory_textfield = new MFXTextField();
+        directory_textfield.setStyle("-fx-font-size: 17;");
+        directory_textfield.setFloatMode(FloatMode.BORDER);
+        directory_textfield.setBorder(new Border(new BorderStroke(Color.SKYBLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(3))));
+        directory_textfield.setContextMenuDisabled(true);
+        directory_textfield.setPadding(new Insets(0, 0, 0, 0));
+        directory_textfield.setAlignment(Pos.CENTER_RIGHT);
+        directory_textfield.prefWidthProperty().bind(server_btn_interface.widthProperty().divide(2));
+
+        // Dossier par défaut pour informer l'utilisateur du dossier d'installation
+        directory_textfield.setText("{{dossier de l'éxecutable}}/TekCity_Officiel/");
+
+        HBox directory_chooser_box = new HBox();
+        directory_chooser_box.setAlignment(Pos.BOTTOM_LEFT);
+        directory_chooser_box.setSpacing(-3);
+
+        directory_chooser_box.getChildren().addAll(directory_chooser_btn, directory_textfield);
+
+        server_btn_interface.setLeft(directory_chooser_box);
+        server_btn_interface.setRight(play_install_btn);
 
         // On ajoute l'affichage
         server_panel.add(titre_server_pane, 0,0, GridPane.REMAINING, 1);
@@ -343,7 +387,9 @@ public class HomeView extends Region {
         GridPane.setHgrow(short_description_pane, Priority.ALWAYS);
 
         description_server.wrappingWidthProperty().bind(server_panel.widthProperty().divide(2));
-        features_server.wrappingWidthProperty().bind(server_panel.widthProperty().divide(2));
+        features_server.wrappingWidthProperty().bind(server_panel.widthProperty().divide(2.5));
+        webview_gallery.prefWidthProperty().bind(features_server.wrappingWidthProperty());
+        webview_gallery.prefHeightProperty().bind(server_panel.heightProperty().multiply(1.6));
 
         // On ajoute à l'interface à gauche le panel de liste de serveur
         interface_panel_left.add(game_panel, 0, 0);
